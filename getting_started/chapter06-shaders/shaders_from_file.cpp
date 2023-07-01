@@ -8,8 +8,11 @@
 
 using namespace std;
 
-const char *vertexPath = "./shaders/chapter06/exercise03_triangle_color_from_position.vs";
-const char *fragmentPath = "./shaders/chapter06/exercise03_triangle_color_from_position.fs";
+const char *vertexPath = "./shaders/chapter06/interpolation.vs";
+const char *fragmentPath = "./shaders/chapter06/interpolation.fs";
+
+// const char *vertexPath = "./shaders/chapter06/exercise01_triangle_inverted.vs";
+// const char *fragmentPath = "./shaders/chapter06/interpolation.fs";
 
 void framebuffer_size_callback(GLFWwindow *window, int width, int height)
 {
@@ -51,15 +54,14 @@ int main()
   // glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
 
   float vertices_triangles[] = {
-      0.5f, -0.5f, 0.0f,  // triangle bottom right
-      -0.5f, -0.5f, 0.0f, // triangle bottom left
-      0.0f, 0.5f, 0.0f    // triangle top
+      0.5f, -0.5f, 0.0f, 1.0, 0.0, 0.0,  // triangle bottom right
+      -0.5f, -0.5f, 0.0f, 0.0, 1.0, 0.0, // triangle bottom left
+      0.0f, 0.5f, 0.0f, 0.0, 0.0, 1.0,   // triangle top
   };
 
   unsigned int indices_triangles[] = {
       0, 1, 2, // triangle
   };
-
   unsigned int VAO;
   glGenVertexArrays(1, &VAO);
   glBindVertexArray(VAO);
@@ -76,10 +78,15 @@ int main()
   glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
   glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices_triangles), indices_triangles, GL_STATIC_DRAW);
 
-  glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void *)0);
+  glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void *)0);
   glEnableVertexAttribArray(0);
 
+  glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void *)(3 * sizeof(float)));
+  glEnableVertexAttribArray(1);
+
   Shader triangleShader(vertexPath, fragmentPath);
+
+  float mask[4] = {0.5f, 0.5f, 0.0f, 0.5f};
 
   // Loop until the user closes the window
   while (!glfwWindowShouldClose(window))
@@ -88,8 +95,13 @@ int main()
     // // Render here
     glClear(GL_COLOR_BUFFER_BIT);
 
+    float time = glfwGetTime();
+    float redChannel = sin(time) / 2.0f + 0.5f;
+    mask[0] = redChannel;
+
     glBindVertexArray(VAO);
     triangleShader.use();
+    triangleShader.setFloatV("mask", mask);
 
     glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
     glDrawElements(GL_TRIANGLES, 3, GL_UNSIGNED_INT, 0);
