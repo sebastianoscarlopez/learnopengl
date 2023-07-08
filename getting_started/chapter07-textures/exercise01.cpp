@@ -11,21 +11,11 @@
 using namespace std;
 
 const char *vertexPath = "./shaders/chapter07/hello_texture.vs";
-const char *fragmentPath = "./shaders/chapter07/exercise04_texture.fs";
+const char *fragmentPath = "./shaders/chapter07/exercise01_texture_flipped.fs";
 
 void framebuffer_size_callback(GLFWwindow *window, int width, int height)
 {
   glViewport(0, 0, width, height);
-}
-
-float mixValue = 0.2f;
-
-void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
-{
-    if (key == GLFW_KEY_UP && action == GLFW_RELEASE)
-        mixValue += 0.1f;
-    if (key == GLFW_KEY_DOWN && action == GLFW_RELEASE)
-        mixValue -= 0.1f;
 }
 
 int main()
@@ -60,15 +50,14 @@ int main()
   }
 
   glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
-  glfwSetKeyCallback(window, key_callback);
 
   Shader triangleShader(vertexPath, fragmentPath);
 
   float vertices_square[] = {
-      0.5f, -0.5f, 0.0f, 1.0, 0.0, 0.0, 2.0, 0.0,  // bottom right
+      0.5f, -0.5f, 0.0f, 1.0, 0.0, 0.0, 1.0, 0.0,  // bottom right
       -0.5f, -0.5f, 0.0f, 0.0, 1.0, 0.0, 0.0, 0.0, // bottom left
-      -0.5f, 0.5f, 0.0f, 0.0, 0.0, 1.0, 0.0, 2.0,  // top left
-      0.5f, 0.5f, 0.0f, 1.0, 0.0, 1.0, 2.0, 2.0    // top right
+      -0.5f, 0.5f, 0.0f, 0.0, 0.0, 1.0, 0.0, 1.0,  // top left
+      0.5f, 0.5f, 0.0f, 1.0, 0.0, 1.0, 1.0, 1.0    // top right
   };
 
   unsigned int indices_triangles[] = {
@@ -111,8 +100,8 @@ int main()
   glGenTextures(1, &texture0);
   glBindTexture(GL_TEXTURE_2D, texture0);
   // set the texture wrapping/filtering options (on currently bound texture)
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
   // load and generate the texture
@@ -169,8 +158,6 @@ int main()
     triangleShader.use();
     triangleShader.setInt("container", 0);
     triangleShader.setInt("face", 1);
-    triangleShader.setFloat("mixValue", mixValue);
-    
 
     glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
     glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);

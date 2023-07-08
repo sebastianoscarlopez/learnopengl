@@ -11,21 +11,11 @@
 using namespace std;
 
 const char *vertexPath = "./shaders/chapter07/hello_texture.vs";
-const char *fragmentPath = "./shaders/chapter07/exercise04_texture.fs";
+const char *fragmentPath = "./shaders/chapter07/exercise01_texture_flipped.fs";
 
 void framebuffer_size_callback(GLFWwindow *window, int width, int height)
 {
   glViewport(0, 0, width, height);
-}
-
-float mixValue = 0.2f;
-
-void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
-{
-    if (key == GLFW_KEY_UP && action == GLFW_RELEASE)
-        mixValue += 0.1f;
-    if (key == GLFW_KEY_DOWN && action == GLFW_RELEASE)
-        mixValue -= 0.1f;
 }
 
 int main()
@@ -60,7 +50,6 @@ int main()
   }
 
   glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
-  glfwSetKeyCallback(window, key_callback);
 
   Shader triangleShader(vertexPath, fragmentPath);
 
@@ -169,8 +158,6 @@ int main()
     triangleShader.use();
     triangleShader.setInt("container", 0);
     triangleShader.setInt("face", 1);
-    triangleShader.setFloat("mixValue", mixValue);
-    
 
     glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
     glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
