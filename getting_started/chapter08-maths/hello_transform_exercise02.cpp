@@ -11,7 +11,7 @@
 
 #include <glm/gtx/string_cast.hpp>
 
-#include "./headers/shader.h"
+#include <shader.hpp>
 
 using namespace std;
 

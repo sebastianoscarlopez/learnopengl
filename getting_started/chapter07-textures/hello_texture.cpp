@@ -6,7 +6,7 @@
 #include <stb_image.h>
 #include <math.h>
 
-#include "./headers/shader.h"
+#include <shader.hpp>
 
 using namespace std;
 

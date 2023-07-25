@@ -4,7 +4,7 @@
 #include <GLFW/glfw3.h>
 #include <glad/glad.h>
 #include <math.h>
-#include "./headers/shader.h"
+#include <shader.hpp>
 
 using namespace std;
 

@@ -11,7 +11,7 @@
 #include <sstream>
 #include <iostream>
 
-#include "./headers/shader.h"
+#include <shader.hpp>
 
 Shader::Shader(const char *vertexPath, const char *fragmentPath)
 {
@@ -85,10 +85,13 @@ Shader::Shader(const char *vertexPath, const char *fragmentPath)
               << infoLog << std::endl;
   };
 
+#ifdef __DEBUG
   std::cout << "vertex" << std::endl;
   std::cout << vShaderCode << std::endl;
   std::cout << "fragment" << std::endl;
   std::cout << fShaderCode << std::endl;
+#endif
+
   ID = glCreateProgram();
   glAttachShader(ID, vertex);
   glAttachShader(ID, fragment);
