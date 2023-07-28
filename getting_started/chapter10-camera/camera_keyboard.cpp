@@ -14,7 +14,7 @@
 #include <shader.hpp>
 #include <shapes/square.hpp>
 #include <shapes/box.hpp>
-#include <camera_fps.hpp>
+#include <camera.hpp>
 
 using namespace std;
 
@@ -24,8 +24,8 @@ void framebuffer_size_callback(GLFWwindow *window, int width, int height)
 }
 
 float speed = 0.0f;
-float cameraSpeed = 0.02f;
-CameraFPS camera = CameraFPS(glm::vec3(0.0f, 0.0f, 10.0f), true);
+float cameraSpeed = 0.005f;
+Camera camera = Camera(glm::vec3(0.0f, 0.0f, 10.0f));
 
 int isFirstTime = 1;
 float lastX = 0.0f, lastY = 0.0f;
@@ -40,8 +40,6 @@ void mouse_callback(GLFWwindow *window, double xPos, double yPos)
   }
   float distX = xPos - lastX;
   float distY = lastY - yPos;
-  lastX = xPos;
-  lastY = yPos;
 
   camera.rotate(distX * cameraSpeed, distY * cameraSpeed);
 }

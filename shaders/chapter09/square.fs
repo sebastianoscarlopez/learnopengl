@@ -13,5 +13,11 @@ uniform float mixValue;
 
 void main()
 {
- FragColor = vec4(color, 0.0) * mix(texture(container, texCoord), texture(face, vec2(texCoord.s, -texCoord.t)), mixValue);
+  vec3 maskColor = color;
+
+  if(gl_FragCoord.x > 400.0)
+  {
+    maskColor += vec3(1.0, 0.0, 0.0);
+  }
+  FragColor = vec4(maskColor, 0.0) * mix(texture(container, texCoord), texture(face, vec2(texCoord.s, -texCoord.t)), mixValue);
 }
