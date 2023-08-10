@@ -101,7 +101,7 @@ int main()
 
     glBindVertexArray(VAO);
     triangleShader.use();
-    triangleShader.setFloatV("mask", mask);
+    triangleShader.setFloat4v("mask", mask);
 
     glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
     glDrawElements(GL_TRIANGLES, 3, GL_UNSIGNED_INT, 0);
